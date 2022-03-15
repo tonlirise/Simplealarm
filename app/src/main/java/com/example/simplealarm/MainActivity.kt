@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                 calendar.set(Calendar.HOUR, timePicker.hour)
 
                 val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                val alarmClockInfo = AlarmManager.AlarmClockInfo(calendar.timeInMillis, null)
+                val alarmClockInfo = AlarmManager.AlarmClockInfo(calendar.timeInMillis, getMainPedingIntent(this))
                 alarmManager.setAlarmClock(alarmClockInfo,getAlarmPendingIntent(this))
 
                 Toast.makeText(this,"Сигнал установлен на ${sdf.format(calendar.time)}",Toast.LENGTH_LONG).show()
@@ -53,6 +53,12 @@ class MainActivity : AppCompatActivity() {
             val alarmIntent = Intent(context, AlarmActivity::class.java)
             alarmIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             return PendingIntent.getActivity(context,REQ_CODE,alarmIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        fun getMainPedingIntent(context : Context) : PendingIntent{
+            val mainIntent = Intent(context, MainActivity::class.java)
+            mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            return PendingIntent.getActivity(context, REQ_CODE,mainIntent,PendingIntent.FLAG_UPDATE_CURRENT)
         }
     }
 }
